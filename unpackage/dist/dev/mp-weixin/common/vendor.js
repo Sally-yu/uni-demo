@@ -8,7 +8,7 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.createApp = createApp;exports.createComponent = createComponent;exports.createPage = createPage;exports.default = void 0;var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _slicedToArray(arr, i) {return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest();}function _nonIterableRest() {throw new TypeError("Invalid attempt to destructure non-iterable instance");}function _iterableToArrayLimit(arr, i) {var _arr = [];var _n = true;var _d = false;var _e = undefined;try {for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {_arr.push(_s.value);if (i && _arr.length === i) break;}} catch (err) {_d = true;_e = err;} finally {try {if (!_n && _i["return"] != null) _i["return"]();} finally {if (_d) throw _e;}}return _arr;}function _arrayWithHoles(arr) {if (Array.isArray(arr)) return arr;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}function _toConsumableArray(arr) {return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread();}function _nonIterableSpread() {throw new TypeError("Invalid attempt to spread non-iterable instance");}function _iterableToArray(iter) {if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter);}function _arrayWithoutHoles(arr) {if (Array.isArray(arr)) {for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) {arr2[i] = arr[i];}return arr2;}}
+Object.defineProperty(exports, "__esModule", { value: true });exports.createApp = createApp;exports.createComponent = createComponent;exports.createPage = createPage;exports.default = void 0;var _vue = _interopRequireDefault(__webpack_require__(/*! vue */ 2));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _objectSpread(target) {for (var i = 1; i < arguments.length; i++) {var source = arguments[i] != null ? arguments[i] : {};var ownKeys = Object.keys(source);if (typeof Object.getOwnPropertySymbols === 'function') {ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) {return Object.getOwnPropertyDescriptor(source, sym).enumerable;}));}ownKeys.forEach(function (key) {_defineProperty(target, key, source[key]);});}return target;}function _slicedToArray(arr, i) {return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest();}function _nonIterableRest() {throw new TypeError("Invalid attempt to destructure non-iterable instance");}function _iterableToArrayLimit(arr, i) {var _arr = [];var _n = true;var _d = false;var _e = undefined;try {for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {_arr.push(_s.value);if (i && _arr.length === i) break;}} catch (err) {_d = true;_e = err;} finally {try {if (!_n && _i["return"] != null) _i["return"]();} finally {if (_d) throw _e;}}return _arr;}function _arrayWithHoles(arr) {if (Array.isArray(arr)) return arr;}function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}function _toConsumableArray(arr) {return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread();}function _nonIterableSpread() {throw new TypeError("Invalid attempt to spread non-iterable instance");}function _iterableToArray(iter) {if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter);}function _arrayWithoutHoles(arr) {if (Array.isArray(arr)) {for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) {arr2[i] = arr[i];}return arr2;}}
 
 var _toString = Object.prototype.toString;
 var hasOwnProperty = Object.prototype.hasOwnProperty;
@@ -1327,9 +1327,10 @@ function parseBaseComponent(vueComponentOptions)
 {var _ref5 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},isPage = _ref5.isPage,initRelation = _ref5.initRelation;var _initVueComponent =
   initVueComponent(_vue.default, vueComponentOptions),_initVueComponent2 = _slicedToArray(_initVueComponent, 2),VueComponent = _initVueComponent2[0],vueOptions = _initVueComponent2[1];
 
-  var options = {
+  var options = _objectSpread({
     multipleSlots: true,
-    addGlobalClass: true };
+    addGlobalClass: true },
+  vueOptions.options || {});
 
 
   {
@@ -1561,7 +1562,7 @@ uni$1;exports.default = _default;
 __webpack_require__.r(__webpack_exports__);
 /* WEBPACK VAR INJECTION */(function(global) {/*!
  * Vue.js v2.6.11
- * (c) 2014-2019 Evan You
+ * (c) 2014-2020 Evan You
  * Released under the MIT License.
  */
 /*  */
@@ -7184,7 +7185,7 @@ var patch = function(oldVnode, vnode) {
     Object.keys(data).forEach(function (key) { //仅同步 data 中有的数据
       mpData[key] = mpInstance.data[key];
     });
-    var diffData = diff(data, mpData);
+    var diffData = this.$shouldDiffData === false ? data : diff(data, mpData);
     if (Object.keys(diffData).length) {
       if (Object({"NODE_ENV":"development","VUE_APP_PLATFORM":"mp-weixin","BASE_URL":"/"}).VUE_APP_DEBUG) {
         console.log('[' + (+new Date) + '][' + (mpInstance.is || mpInstance.route) + '][' + this._uid +
@@ -7359,12 +7360,11 @@ function getTarget(obj, path) {
 function internalMixin(Vue) {
 
   Vue.config.errorHandler = function(err) {
+    console.error(err);
     /* eslint-disable no-undef */
     var app = getApp();
     if (app && app.onError) {
       app.onError(err);
-    } else {
-      console.error(err);
     }
   };
 
@@ -7611,9 +7611,9 @@ module.exports = g;
 
 /***/ }),
 /* 4 */
-/*!*****************************************************************!*\
-  !*** /Users/mac/Documents/HBuilderProjects/uni-demo/pages.json ***!
-  \*****************************************************************/
+/*!******************************************************!*\
+  !*** C:/Users/Yu/Desktop/uniapp/uni-demo/pages.json ***!
+  \******************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -8514,24 +8514,24 @@ main();
 /*! exports provided: _from, _id, _inBundle, _integrity, _location, _phantomChildren, _requested, _requiredBy, _resolved, _shasum, _spec, _where, author, bugs, bundleDependencies, deprecated, description, devDependencies, files, gitHead, homepage, license, main, name, repository, scripts, version, default */
 /***/ (function(module) {
 
-module.exports = {"_from":"@dcloudio/uni-stat@alpha","_id":"@dcloudio/uni-stat@2.0.0-alpha-25720200116005","_inBundle":false,"_integrity":"sha512-RZFw3WAaS/CZTzzv9JPaWvmoNitojD/06vPdHSzlqZi8GbuE222lFuyochEjrGkG8rPPrWHAnwfoPBuQVtkfdg==","_location":"/@dcloudio/uni-stat","_phantomChildren":{},"_requested":{"type":"tag","registry":true,"raw":"@dcloudio/uni-stat@alpha","name":"@dcloudio/uni-stat","escapedName":"@dcloudio%2funi-stat","scope":"@dcloudio","rawSpec":"alpha","saveSpec":null,"fetchSpec":"alpha"},"_requiredBy":["#USER","/","/@dcloudio/vue-cli-plugin-uni"],"_resolved":"https://registry.npmjs.org/@dcloudio/uni-stat/-/uni-stat-2.0.0-alpha-25720200116005.tgz","_shasum":"08bb17aba91c84a981f33d74153aa3dd07b578ad","_spec":"@dcloudio/uni-stat@alpha","_where":"/Users/guoshengqiang/Documents/dcloud-plugins/alpha/uniapp-cli","author":"","bugs":{"url":"https://github.com/dcloudio/uni-app/issues"},"bundleDependencies":false,"deprecated":false,"description":"","devDependencies":{"@babel/core":"^7.5.5","@babel/preset-env":"^7.5.5","eslint":"^6.1.0","rollup":"^1.19.3","rollup-plugin-babel":"^4.3.3","rollup-plugin-clear":"^2.0.7","rollup-plugin-commonjs":"^10.0.2","rollup-plugin-copy":"^3.1.0","rollup-plugin-eslint":"^7.0.0","rollup-plugin-json":"^4.0.0","rollup-plugin-node-resolve":"^5.2.0","rollup-plugin-replace":"^2.2.0","rollup-plugin-uglify":"^6.0.2"},"files":["dist","package.json","LICENSE"],"gitHead":"a129bde60de35f7ef497f43d5a45b4556231995c","homepage":"https://github.com/dcloudio/uni-app#readme","license":"Apache-2.0","main":"dist/index.js","name":"@dcloudio/uni-stat","repository":{"type":"git","url":"git+https://github.com/dcloudio/uni-app.git","directory":"packages/uni-stat"},"scripts":{"build":"NODE_ENV=production rollup -c rollup.config.js","dev":"NODE_ENV=development rollup -w -c rollup.config.js"},"version":"2.0.0-alpha-25720200116005"};
+module.exports = {"_from":"@dcloudio/uni-stat@next","_id":"@dcloudio/uni-stat@2.0.0-26420200313001","_inBundle":false,"_integrity":"sha512-7dPuazTiDmUyRcw+WW+UlWGKH0eeCUB+p0P4pJVKEHjpdXnXgvDQCSdJk764NH99TfsUycnuxecP5oHckVa88g==","_location":"/@dcloudio/uni-stat","_phantomChildren":{},"_requested":{"type":"tag","registry":true,"raw":"@dcloudio/uni-stat@next","name":"@dcloudio/uni-stat","escapedName":"@dcloudio%2funi-stat","scope":"@dcloudio","rawSpec":"next","saveSpec":null,"fetchSpec":"next"},"_requiredBy":["#USER","/","/@dcloudio/vue-cli-plugin-uni"],"_resolved":"https://registry.npmjs.org/@dcloudio/uni-stat/-/uni-stat-2.0.0-26420200313001.tgz","_shasum":"a006e329e033cd412accfa635f8933dbb822a9c3","_spec":"@dcloudio/uni-stat@next","_where":"/Users/guoshengqiang/Documents/dcloud-plugins/release/uniapp-cli","author":"","bugs":{"url":"https://github.com/dcloudio/uni-app/issues"},"bundleDependencies":false,"deprecated":false,"description":"","devDependencies":{"@babel/core":"^7.5.5","@babel/preset-env":"^7.5.5","eslint":"^6.1.0","rollup":"^1.19.3","rollup-plugin-babel":"^4.3.3","rollup-plugin-clear":"^2.0.7","rollup-plugin-commonjs":"^10.0.2","rollup-plugin-copy":"^3.1.0","rollup-plugin-eslint":"^7.0.0","rollup-plugin-json":"^4.0.0","rollup-plugin-node-resolve":"^5.2.0","rollup-plugin-replace":"^2.2.0","rollup-plugin-uglify":"^6.0.2"},"files":["dist","package.json","LICENSE"],"gitHead":"b1fdbafab5dd4673cff64188a5203d0c947e4f50","homepage":"https://github.com/dcloudio/uni-app#readme","license":"Apache-2.0","main":"dist/index.js","name":"@dcloudio/uni-stat","repository":{"type":"git","url":"git+https://github.com/dcloudio/uni-app.git","directory":"packages/uni-stat"},"scripts":{"build":"NODE_ENV=production rollup -c rollup.config.js","dev":"NODE_ENV=development rollup -w -c rollup.config.js"},"version":"2.0.0-26420200313001"};
 
 /***/ }),
 /* 7 */
-/*!**********************************************************************************!*\
-  !*** /Users/mac/Documents/HBuilderProjects/uni-demo/pages.json?{"type":"style"} ***!
-  \**********************************************************************************/
+/*!***********************************************************************!*\
+  !*** C:/Users/Yu/Desktop/uniapp/uni-demo/pages.json?{"type":"style"} ***!
+  \***********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = { "pages": { "pages/home/home": { "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/index/index": { "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/basics/layout": { "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/basics/background": { "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/basics/text": { "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/basics/icon": { "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/basics/button": { "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/basics/design": { "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/basics/tag": { "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/basics/avatar": { "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/basics/progress": { "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/basics/shadow": { "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/basics/loading": { "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/component/bar": { "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/component/nav": { "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/component/list": { "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/component/card": { "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/component/form": { "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/component/timeline": { "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/component/chat": { "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/component/swiper": { "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/component/modal": { "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/component/steps": { "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/plugin/indexes": { "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/plugin/animation": { "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/plugin/drawer": { "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/plugin/verticalnav": { "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/home/main/main": { "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/home/main": {} }, "globalStyle": { "navigationBarBackgroundColor": "#ffeb0e", "navigationBarTitleText": "我要拼车", "navigationStyle": "default", "navigationBarTextStyle": "black" } };exports.default = _default;
+Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default = { "pages": { "pages/index/home": { "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/func/fache": { "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/func/dache": { "usingComponents": {}, "usingAutoImportComponents": {} }, "pages/index/index": { "usingAutoImportComponents": {}, "usingComponents": {} }, "pages/basics/layout": { "usingAutoImportComponents": {}, "usingComponents": {} }, "pages/basics/background": { "usingAutoImportComponents": {}, "usingComponents": {} }, "pages/basics/text": { "usingAutoImportComponents": {}, "usingComponents": {} }, "pages/basics/icon": { "usingAutoImportComponents": {}, "usingComponents": {} }, "pages/basics/button": { "usingAutoImportComponents": {}, "usingComponents": {} }, "pages/basics/design": { "usingAutoImportComponents": {}, "usingComponents": {} }, "pages/basics/tag": { "usingAutoImportComponents": {}, "usingComponents": {} }, "pages/basics/avatar": { "usingAutoImportComponents": {}, "usingComponents": {} }, "pages/basics/progress": { "usingAutoImportComponents": {}, "usingComponents": {} }, "pages/basics/shadow": { "usingAutoImportComponents": {}, "usingComponents": {} }, "pages/basics/loading": { "usingAutoImportComponents": {}, "usingComponents": {} }, "pages/component/bar": { "usingAutoImportComponents": {}, "usingComponents": {} }, "pages/component/nav": { "usingAutoImportComponents": {}, "usingComponents": {} }, "pages/component/list": { "usingAutoImportComponents": {}, "usingComponents": {} }, "pages/component/card": { "usingAutoImportComponents": {}, "usingComponents": {} }, "pages/component/form": { "usingAutoImportComponents": {}, "usingComponents": {} }, "pages/component/timeline": { "usingAutoImportComponents": {}, "usingComponents": {} }, "pages/component/chat": { "usingAutoImportComponents": {}, "usingComponents": {} }, "pages/component/swiper": { "usingAutoImportComponents": {}, "usingComponents": {} }, "pages/component/modal": { "usingAutoImportComponents": {}, "usingComponents": {} }, "pages/component/steps": { "usingAutoImportComponents": {}, "usingComponents": {} }, "pages/plugin/indexes": { "usingAutoImportComponents": {}, "usingComponents": {} }, "pages/plugin/animation": { "usingAutoImportComponents": {}, "usingComponents": {} }, "pages/plugin/drawer": { "usingAutoImportComponents": {}, "usingComponents": {} }, "pages/plugin/verticalnav": { "usingAutoImportComponents": {}, "usingComponents": {} } }, "globalStyle": { "navigationBarBackgroundColor": "#ffda05", "navigationBarTitleText": "整点活吧", "navigationStyle": "custom", "navigationBarTextStyle": "black" } };exports.default = _default;
 
 /***/ }),
 /* 8 */
-/*!*********************************************************************************!*\
-  !*** /Users/mac/Documents/HBuilderProjects/uni-demo/pages.json?{"type":"stat"} ***!
-  \*********************************************************************************/
+/*!**********************************************************************!*\
+  !*** C:/Users/Yu/Desktop/uniapp/uni-demo/pages.json?{"type":"stat"} ***!
+  \**********************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
